@@ -1,5 +1,7 @@
 # inventario/views.py
 from modulos.utilitario.viewset import RestViewSet, RestViewSetSimple
+from django.db.models import Sum, DecimalField
+from django.db.models.functions import Coalesce
 
 from .models import (
     UnidadMedida, TipoProducto, Categoria, TipoAlmacen, 
@@ -30,11 +32,15 @@ class TipoAlmacenViewSet(RestViewSet):
 class AlmacenViewSet(RestViewSet):
     queryset = Almacen.objects.filter(fecha_eliminacion__isnull=True)
     serializer_class = AlmacenSerializer
-
+    
 class ProductoViewSet(RestViewSet):
-    queryset = Producto.objects.filter(fecha_eliminacion__isnull=True)
+    # Reemplaza tu queryset actual por este:
+    queryset = Producto.objects.filter(fecha_eliminacion__isnull=True).annotate(
+        # Sumamos la cantidad de la relación "stocks". Coalesce convierte nulos a 0.0
+        stock_total=Coalesce(Sum('stocks__cantidad'), 0.0, output_field=DecimalField())
+    )
     serializer_class = ProductoSerializer
-
+    
 class ProductoImagenViewSet(RestViewSetSimple):
     """
     Usa RestViewSetSimple porque hereda de models.Model estándar

@@ -48,7 +48,7 @@ class ProductoSerializer(serializers.ModelSerializer):
     categoria_nombre = serializers.CharField(source='categoria.nombre', read_only=True)
     unidad_medida_abreviatura = serializers.CharField(source='unidad_medida.abreviatura', read_only=True)
     imagenes = ProductoImagenSerializer(many=True, read_only=True) # Anidamos las imágenes para el frontend
-
+    stock_total = serializers.DecimalField(max_digits=12, decimal_places=2, read_only=True)
     class Meta:
         model = Producto
         fields = '__all__'

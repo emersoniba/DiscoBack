@@ -30,6 +30,7 @@ urlpatterns = [
     # locales
     path("api/", include("modulos.users.urls")),
     path("api/", include("modulos.inventario.urls")),
+    path("api/", include("modulos.movimientos.urls")),
     # Módulos
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
