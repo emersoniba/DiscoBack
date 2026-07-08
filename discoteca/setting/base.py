@@ -50,6 +50,7 @@ APP_LOCAL = [
     "modulos.users",
     "modulos.inventario",
     "modulos.movimientos",
+    "modulos.ventas",
 ]
 
 INSTALLED_APPS = APP_BASE + APP_TRIRD + APP_LOCAL
