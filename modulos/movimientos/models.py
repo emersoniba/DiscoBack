@@ -77,7 +77,13 @@ class MovimientoDetalle(AuditoriaBase):
     cantidad = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0.01)])
     precio_unitario_compra = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     subtotal = models.DecimalField(max_digits=12, decimal_places=2, default=0)
-
+    # --- NUEVOS CAMPOS A AGREGAR ---
+    cantidad_paquetes = models.DecimalField(max_digits=10, decimal_places=2, default=1)
+    unidades_por_paquete = models.IntegerField(default=1)
+    costo_por_paquete = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    # -------------------------------
+    
+    
     def save(self, *args, **kwargs):
         # Auto-calculamos el subtotal antes de guardar
         self.subtotal = self.cantidad * self.precio_unitario_compra

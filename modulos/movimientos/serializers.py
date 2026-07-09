@@ -107,12 +107,21 @@ class MovimientoSerializer(serializers.ModelSerializer):
                 cantidad = detalle_data["cantidad"]
                 precio = detalle_data.get("precio_unitario_compra", 0)
 
+                # --- EXTRAEMOS LOS NUEVOS CAMPOS DEL JSON ---
+                paquetes = detalle_data.get('cantidad_paquetes', 1)
+                unidades_paq = detalle_data.get('unidades_por_paquete', 1)
+                costo_paq = detalle_data.get('costo_por_paquete', 0)
+                
                 # Guardamos la línea de detalle vinculada a este movimiento
                 MovimientoDetalle.objects.create(
                     movimiento=movimiento,
                     producto=producto,
                     cantidad=cantidad,
                     precio_unitario_compra=precio,
+                    # --- GUARDAMOS LOS NUEVOS CAMPOS ---
+                    cantidad_paquetes=paquetes,
+                    unidades_por_paquete=unidades_paq,
+                    costo_por_paquete=costo_paq,
                     creado_por=usuario,
                 )
 
