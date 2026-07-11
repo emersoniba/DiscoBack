@@ -13,8 +13,7 @@ class PersonaSerializer(serializers.ModelSerializer):
         model = Persona
         fields = [
             'ci', 'nombres', 'apellido_paterno', 'apellido_materno', 
-            'nombre_completo', 'cargo', 'telefono', 'direccion', 
-            'correo', 'unidad', 'imagen', 'username_generado'
+            'nombre_completo', 'telefono', 'imagen', 'username_generado'
         ]
         read_only_fields = ['creado_por', 'fecha_creacion', 'modificado_por', 'fecha_modificacion']
     
@@ -98,30 +97,12 @@ class UsuarioSerializer(serializers.ModelSerializer):
         
         return usuario
     
-    '''def generar_username(self, persona):
-        """Generar username único basado en persona"""
-        nombre_partes = persona.nombres.split()
-        primera_letra_nombre = nombre_partes[0][0].lower() if nombre_partes else ''
-        apellido_paterno_completo = persona.apellido_paterno.lower()
-        
-        username_base = f"{primera_letra_nombre}{apellido_paterno_completo}"
-        
-        username = username_base
-        contador = 1
-        while Usuario.objects.filter(username=username).exists():
-            username = f"{username_base}{contador}"
-            contador += 1
-        
-        return username
-    '''
     def update(self, instance, validated_data):
         password = validated_data.pop('password', None)
         persona = validated_data.pop('persona', None)
         
         if persona:
             instance.persona = persona
-            if persona.correo:
-                instance.email = persona.correo
         
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
@@ -243,11 +224,7 @@ class PersonaCreateSerializer(serializers.Serializer):
     nombres = serializers.CharField(max_length=100)
     apellido_paterno = serializers.CharField(max_length=100, required=False, allow_blank=True)
     apellido_materno = serializers.CharField(max_length=100, required=False, allow_blank=True)
-    cargo = serializers.CharField(max_length=100)
     telefono = serializers.CharField(max_length=20, required=False, allow_blank=True)
-    direccion = serializers.CharField(required=False, allow_blank=True)
-    correo = serializers.EmailField(required=False, allow_blank=True)
-    unidad = serializers.CharField(max_length=100, required=False, allow_blank=True)
     imagen = serializers.ImageField(required=False)
     roles = serializers.ListField(child=serializers.CharField(), required=False)
     
@@ -278,7 +255,7 @@ class PersonaCreateSerializer(serializers.Serializer):
         usuario = Usuario.objects.create_user(
             username=username,
             password='123456',
-            email=persona.correo or '',
+            email='',
             is_active=True,
             persona=persona
         )

@@ -9,11 +9,7 @@ class Persona(AuditoriaBase):
     nombres = models.CharField("Nombres de la persona", max_length=100, blank=False, null=False)
     apellido_paterno = models.CharField("Apellido paterno", max_length=100, blank=True, null=True)
     apellido_materno = models.CharField("Apellido materno", max_length=100, blank=True, null=True)
-    cargo = models.CharField("Cargo que ocupa", max_length=100, blank=False, null=False)
     telefono = models.CharField("Telefono de usuario", max_length=20, blank=True, null=True)
-    direccion = models.TextField("Direccion de persona", blank=True, null=True)
-    correo = models.EmailField("Correo de persona", blank=True, null=True)
-    unidad = models.CharField("Unidad en la que se encuentra", max_length=100, null=True, blank=True)
     imagen = models.ImageField("Imagen de perfil", upload_to='imagenes_perfil/', null=True, blank=True)
 
     class Meta:
